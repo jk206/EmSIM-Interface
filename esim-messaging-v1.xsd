@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://namespaces.gsma.org/esim-messaging/1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:rps="http://namespaces.gsma.org/esim-messaging/1" 
+	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+	ds:schemaLocation="xmldsig-core-schema.xsd"
+	elementFormDefault="qualified">
+	
+    <xs:simpleType name="EIDType">
+  		<xs:restriction base="xs:hexBinary"></xs:restriction>
+  	</xs:simpleType> 	
+  	<xs:simpleType name="ICCIDType">
+  		<xs:restriction base="xs:string"></xs:restriction>
+  	</xs:simpleType>
+  	<xs:simpleType name="MSISDNType">
+  		<xs:restriction base="xs:string"></xs:restriction>
+  	</xs:simpleType>
+  	<xs:simpleType name="IMSIType">
+  		<xs:restriction base="xs:string"></xs:restriction>
+  	</xs:simpleType>	
+  	<xs:simpleType name="ObjectIdentifierType">
+  		<xs:restriction base="xs:string"></xs:restriction>
+  	</xs:simpleType>
+  	<xs:simpleType name="TARType">
+  		<xs:restriction base="xs:hexBinary"></xs:restriction>
+  	</xs:simpleType>  	
+  	<xs:simpleType name="ThreeDigitVersionType">
+  		<xs:restriction base="xs:string"></xs:restriction>
+  	</xs:simpleType>  	
+  	<xs:simpleType name="AIDType">
+  		<xs:restriction base="xs:hexBinary"></xs:restriction>
+  	</xs:simpleType>
+  	<xs:simpleType name="StatusType">
+  		<xs:restriction base="xs:string"/>
+  	</xs:simpleType>
+  		<xs:simpleType name="KeyIndexType">
+		<xs:restriction base="xs:integer"></xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SDRoleType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="KeysetVersionType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="KeysetUsageType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+  	
+    <xs:complexType name="EISType">
+    	<xs:sequence>
+    		<xs:element name="EumSignedInfo"/>
+    		<xs:element name="EumSignature" type="xs:string"/>
+    		<xs:element name="RemainingMemory" type="xs:positiveInteger"/>
+    		<xs:element name="AvailableMemoryForProfiles" type="xs:positiveInteger"/>
+    		<xs:element name="LastAuditDate" type="xs:dateTime"/>
+    		<xs:element name="ProfileInfo" type="xs:string" />
+    		<xs:element name="Isd-r" type="xs:string"/>
+    		<xs:element name="AuditTrail" type="xs:string"/>
+    		<xs:element name="AdditionalProperties" type="xs:string"/>
+    	</xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="EumSignedInfoType">
+    	<xs:sequence>
+    		<xs:element name="EID" type="rps:EIDType"/>
+    		<xs:element name="Eum-id" type="rps:ObjectIdentifierType"/>
+    		<xs:element name="ProductionDate" type="xs:dateTime"/>
+    		<xs:element name="PlatformType" type="xs:string"/>
+    		<xs:element name="PlatformVersion" type="rps:ThreeDigitVersionType"/>
+    		<xs:element name="Isd-p-loadfile-aid" type="rps:AIDType"/>
+    		<xs:element name="Isd-p-module-aid" type="rps:AIDType"/>
+    		<xs:element name="Ecasd" type="rps:EIDType" />
+    		<xs:element name="EuiccCapabilities" type="xs:string" />
+    	</xs:sequence>
+    </xs:complexType>
+ 
+ 	<xs:complexType name="ProfileInfoType">
+ 		<xs:sequence>
+			<xs:element name="Iccid" type="rps:ICCIDType"/>
+			<xs:element name="Isd-p-aid" type="rps:AIDType"/>
+			<xs:element name="Mno-id" type="rps:ObjectIdentifierType"/> 
+			<xs:element name="FallbackAttribute" type="xs:boolean" />
+			<xs:element name="SubscriptionAddress" type="rps:SubscriptionAddressType"/>
+			<xs:element name="State" type ="xs:string"/>
+			<xs:element name="Smdp-id" type ="rps:ObjectIdentifierType"/>
+			<xs:element name="ProfileType" type="xs:string"/>
+			<xs:element name="AllocatedMemory" type="xs:positiveInteger"/>
+			<xs:element name="FreeMemory" type="xs:positiveInteger" />
+			<xs:element name="Pol2" type="xs:string" />
+ 		</xs:sequence>
+ 	</xs:complexType> 
+ 	
+ 	<xs:complexType name="SubscriptionAddressType">
+ 		<xs:sequence>
+ 			<xs:element name="Imsi" type="rps:IMSIType"/>
+ 			<xs:element name="Msisdn" type="rps:MSISDNType" />
+ 		</xs:sequence>
+ 	</xs:complexType>
+    
+ 	<xs:complexType name="RPSMessageType">
+ 		<xs:sequence>
+ 			<xs:element name="RPSHeader" type="rps:RPSHeaderType"/>
+ 			<xs:element name="RPSBody" type="rps:RPSBodyType"/>
+ 		</xs:sequence>
+ 	</xs:complexType>
+
+    <xs:complexType name="RPSHeaderType">
+    	<xs:sequence>
+    		<xs:element name="SenderEntity" type="rps:EntityType"/>
+    		<xs:element name="SenderName" type="xs:string"/>
+    		<xs:element name="ReceiverEntity" type="rps:EntityType"/>
+    		<xs:element name="ResponseEndpoint" type="xs:anyURI"/>
+    		<xs:element name="TransactionId" type="xs:anyURI"/>
+    		<xs:element name="MessageId" type="xs:anyURI"/>
+    		<xs:element name="MessageType" type="rps:RPSMessageType"/>
+    		<xs:element name="MessageDate" type="xs:dateTime"/>
+    	</xs:sequence>
+    </xs:complexType>
+	
+	<xs:complexType name="EntityType">
+		<xs:sequence>
+			<xs:element name="EntityId" type="rps:ObjectIdentifierType"/>
+			<xs:element name="EntityName" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+    <xs:complexType name="RPSBodyType">    
+    </xs:complexType>
+    
+    <xs:complexType name="BaseRequestType">
+    	<xs:sequence>
+    		<xs:element name="FunctionCallIdentifier" type="xs:string"/>
+    		<xs:element name="ValidityPeriod"	type="xs:positiveInteger"/>
+    	</xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="BaseNotificationType">
+		<xs:sequence>
+			<xs:element name="FunctionCallIdentifier" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BaseResponseType">
+		<xs:sequence>
+			<xs:element name="ProcessingStart" type="xs:dateTime"/>
+			<xs:element name="ProcessingEnd" type="xs:dateTime"/>
+			<xs:element name="AcceptableValidityPeriod" type="xs:positiveInteger"/>
+			<xs:element name="FunctionExecutionStatus" type="rps:ExecutionStatusType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ExecutionStatusType">
+		<xs:sequence>
+			<xs:element name="Status" type="rps:StatusType"/>
+			<xs:element name="StatusCodeData" type="rps:StatusCodeDataType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="StatusCodeDataType">
+		<xs:sequence>
+			<xs:element name="Subject" type="rps:ObjectIdentifierType" />
+			<xs:element name="Reason" type="rps:ObjectIdentifierType" />
+			<xs:element name="SubjectIdentifier"  type="xs:string" />
+			<xs:element name="Message" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="SecurityDomainType">
+		<xs:sequence>
+			<xs:element name="Aid" type="rps:AIDType"/>
+			<xs:element name="Tar" type="rps:TARType"/>
+			<xs:element name="Sin" type="xs:hexBinary"/>
+			<xs:element name="Sdin" type="xs:hexBinary"/>
+			<xs:element name="Role" type="rps:SDRoleType"/>
+			<xs:element name="Keyset" type="rps:KeysetType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="KeysetType">
+		<xs:sequence>
+			<xs:element name="Version" type="rps:KeysetVersionType"/>
+			<xs:element name="Type" type="rps:KeysetUsageType"/>
+			<xs:element name="Cntr" type="xs:nonNegativeInteger"/>
+			<xs:element name="Key" type="rps:KeyType"/>
+			<xs:element name="Certificate" type="rps:GPCertificateType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="KeyType">
+		<xs:sequence>
+			<xs:element name="Index" type="rps:KeyIndexType"/>
+			<xs:element name="KeyComponent" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GPCertificateType">
+		<xs:sequence>
+			<xs:element name="Index" type="rps:KeyIndexType"/>
+			<xs:element name="CAId"  type="rps:ObjectIdentifierType"/>
+			<xs:element name="Value" type="xs:hexBinary"/>	
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AuditTrailRecordType">
+		<xs:sequence>
+			<xs:element name="Eid" type="rps:EIDType"/>
+			<xs:element name="Smsr-id" type="rps:ObjectIdentifierType"/>
+			<xs:element name="OperationDate" type="xs:dateTime"/>
+			<xs:element name="OperationType" type="xs:hexBinary"/>
+			<xs:element name="RequesterId" type="rps:ObjectIdentifierType"/>
+			<xs:element name="OperationExecutionStatus" type="rps:ExecutionStatusType"/>
+			<xs:element name="Isd-p-aid" type="rps:AIDType"/>
+			<xs:element name="Iccid" type="rps:ICCIDType"/>
+			<xs:element name="Imei" type="xs:hexBinary"/>
+			<xs:element name="Meid" type="xs:hexBinary"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="EuiccCapabilitiesType">
+		<xs:sequence>
+			<xs:element name="CattpSupport" type="xs:boolean"/>
+			<xs:element name="CattpVersion" type="rps:ThreeDigitVersionType"/>
+			<xs:element name="HttpSupport"	type="xs:boolean"/>
+			<xs:element name="HttpVersion"	type="rps:ThreeDigitVersionType"/>
+			<xs:element name="SecurePacketVersion" type="rps:ThreeDigitVersionType"/>
+			<xs:element name="RemoterovisioningVersion" type="rps:ThreeDigitVersionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+
+	<xs:element name="RPSMessage" type="rps:RPSMessageType"/>
+	<xs:element name="RPSHeader" type="rps:RPSHeaderType"/>	
+	<xs:element name="RPSBody" type="rps:RPSBodyType"/>
+	
+	<xs:element name="Keyset" type="rps:KeysetType"/>
+	<xs:element name="EuiccCapabilities" type="rps:EuiccCapabilitiesType"/>
+	
+    <xs:element name="ES1-RegisterEISRequest">
+    	<xs:complexType>
+    		<xs:complexContent>
+    			<xs:extension base="rps:BaseRequestType">
+    				<xs:sequence>
+    				<xs:element name="Eis" type="rps:EISType"/>
+    				</xs:sequence>
+    			</xs:extension>
+    		</xs:complexContent>
+    	</xs:complexType>
+    </xs:element>
+    <xs:element name="ES1-RegisterEISResponse">
+    	<xs:complexType>
+    		<xs:complexContent>
+    			<xs:extension base="rps:BaseResponseType">
+    			</xs:extension>
+    		</xs:complexContent>
+    	</xs:complexType>
+    </xs:element>
+    
+     <xs:element name="ES2-GetEISRequest">
+    	<xs:complexType>
+    		<xs:complexContent>
+    			<xs:extension base="rps:BaseRequestType">
+    				<xs:sequence>
+    				<xs:element name="Eid" type="rps:EIDType"/>
+    				<xs:element name="SmSr-id" type="rps:ObjectIdentifierType"/>
+    				</xs:sequence>
+    			</xs:extension>
+    		</xs:complexContent>
+    	</xs:complexType>
+    </xs:element>
+ <xs:element name="ES2-GetEISResponse">
+    	<xs:complexType>
+    		<xs:complexContent>
+    			<xs:extension base="rps:BaseResponseType">
+    				<xs:sequence>
+    					<xs:element name="EIS" type="rps:EISType"/>
+    				</xs:sequence>
+    			</xs:extension>
+    		</xs:complexContent>
+    	</xs:complexType>
+    </xs:element>
+    
+      <xs:element name="ES2-DownloadProfileRequest">
+    	<xs:complexType>
+    		<xs:complexContent>
+    			<xs:extension base="rps:BaseRequestType">
+    				<xs:sequence>
+    				<xs:element name="Eid" type="rps:EIDType"/>
+    				<xs:element name="SmSr-id" type="rps:ObjectIdentifierType"/>
+    				<xs:element name="PorifleType" type="xs:string"/>
+    				<xs:element name="ICCID" type="rps:ICCIDType"/>
+    				<xs:element name="EnableProfile" type="xs:boolean"/>
+    				</xs:sequence>
+    			</xs:extension>
+    		</xs:complexContent>
+    	</xs:complexType>
+    </xs:element>
+        <xs:element name="ES2-DownloadProfileResponse">
+    	<xs:complexType>
+    		<xs:complexContent>
+    			<xs:extension base="rps:BaseResponseType">
+    				<xs:sequence>
+    					<xs:element name="ICCID" type="rps:ICCIDType"/>
+    				</xs:sequence>
+    			</xs:extension>
+    		</xs:complexContent>
+    	</xs:complexType>
+    </xs:element>
+    
+</schema>
